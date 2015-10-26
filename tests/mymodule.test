@@ -16,7 +16,7 @@ class MymoduleTestCase extends DrupalWebTestCase {
   public static function getInfo() {
     return array(
       'name' => t('Mymodule tests'),
-      'description' => t('TODO: write me.'),
+      'description' => t('Ensure all form data is successfully write into the mymodule table.'),
       'group' => t('Mymodule'),
     );
   }
@@ -28,14 +28,43 @@ class MymoduleTestCase extends DrupalWebTestCase {
     // Call the parent with an array of modules to enable for the test.
     parent::setUp(array('mymodule'));
 
-    // TODO: perform additional setup tasks here if required.
+    // perform additional setup tasks.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer mymodule'
+    ));
+    $this->drupalLogin($this->privileged_user);
   }
 
   /**
    * Test the module's functionality.
    */
-  function testTodoChangeThisName() {
-    // TODO: write test!
+  function testSaveRecord() {
+    $languages = language_list();
+    $test_name = 'Text Name';
+    $test_email = 'test@example.com';
+    $test_address = '21 test road, test building, test district, testcountry';
+    $test_country = 'GB';
+
+    foreach ($languages as $language) {
+      if ($language->enabled) {
+        $langcode = $language->language;
+        $edit = array();
+        $edit[$langcode . '[name]'] = $test_name;
+        $edit[$langcode . '[email]'] = $test_email;
+        $edit[$langcode . '[address]'] = $test_address;
+        $edit[$langcode . '[country]'] = $test_country;
+
+        $this->drupalPost('admin/mymodule/config', $edit, t('Save configuration'));
+        $objects = ctools_export_load_object('mymodule', 'conditions', array('language' => $langcode));
+        $obj = $objects[$langcode];
+
+        $this->assertIdentical($obj->name, $test_name);
+        $this->assertIdentical($obj->email, $test_email);
+        $this->assertIdentical($obj->address, $test_address);
+        $this->assertIdentical($obj->country, $test_country);
+        break;
+      }
+    }
   }
 
 }
