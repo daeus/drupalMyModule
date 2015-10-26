@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update of this module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mymodule_schema() {
+  $schema['mymodule'] = array(
+    'description' => 'Table for My Module.',
+    'export' => array(
+      'key' => 'language',
+      'key name' => 'Langugage code',
+      'primary key' => 'id',
+      'identifier' => 'preset', // Exports will be defined as $preset
+      'default hook' => 'default_mymodule',  // Function hook name.
+      'api' => array(
+        'owner' => 'mymodule',
+        'api' => 'default_mymodule',  // Base name for api include files.
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+    ),
+    'fields' => array(
+      'id' => array(
+        'description' => 'Language code of the person information.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'no export' => TRUE, // Do not export database-only key
+      ),
+      'language' => array(
+        'description' => 'Luaguage code of the person information, acts as machine-readable name for presets.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Support person\' name.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'email' => array(
+        'description' => 'Support person\' email.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'address' => array(
+        'description' => 'Support person\' address',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'country' => array(
+        'description' => 'Country name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'language' => array('language'),
+    ),
+  );
+
+  return $schema;
+}

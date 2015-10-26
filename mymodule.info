@@ -1,0 +1,8 @@
+name = My Module
+description = TODO: Description of module
+dependencies[] = ctools
+dependencies[] = block
+dependencies[] = countries
+package = mymodule
+core = 7.x
+files[] = tests/mymodule.test
