@@ -11,8 +11,7 @@ Then update the .htaccess to ignore the subdir in rewrite rule.
 ```RewriteRule ^ subdir/index.php [L]```  
 
 
-***Follow up 1. Apache configuration especially Virtual Host configuration. Give statements that you would use in the Apache conf file.***
--------
+***Follow up 1. Apache configuration especially Virtual Host configuration. Give statements that you would use in the Apache conf file.***   
 ```
     <VirtualHost *:80>
       DocumentRoot /var/www/public_html
